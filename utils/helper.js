@@ -3,6 +3,7 @@ const sha256 = require('crypto-js/sha256');
 const hmacSHA512 = require('crypto-js/hmac-sha512');
 const Base64 = require('crypto-js/enc-base64');
 const CryptoJS = require('crypto-js');
+const staticData = require('../static/requirement_akg');
 const privateKey = 'kucingtralalala';
 
 function randomString(length) {
@@ -73,6 +74,32 @@ const camelCaseConvert = (message) => {
   return value;
 };
 
+const getRequirement = (ageInput) => {
+  let index = staticData.filter((x) => x.age <= ageInput);
+  return index[index.length - 1];
+};
+
+const getAkg = (ageInput) => {
+  const requirementData = getRequirement(ageInput);
+
+  const calories = requirementData.calories;
+  const protein = (requirementData.calories / 100) * 15;
+  const carb = (requirementData.calories / 100) * 65;
+  const fat = (requirementData.calories / 100) * 20;
+  const akg = Math.round(
+    ((protein + fat + carb) / requirementData.calories) * 100
+  );
+
+  const output = {
+    calories,
+    protein,
+    carb,
+    fat,
+    akg,
+  };
+  return output;
+};
+
 module.exports = {
   saveInput,
   generateToken,
@@ -80,4 +107,6 @@ module.exports = {
   decryption,
   generateUserid,
   camelCaseConvert,
+  getRequirement,
+  getAkg,
 };

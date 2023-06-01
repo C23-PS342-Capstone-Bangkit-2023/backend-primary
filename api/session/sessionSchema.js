@@ -1,12 +1,6 @@
 const Joi = require('joi').extend(require('@joi/date'));
 
 const usersSchema = Joi.object({
-  // deviceid: Joi.string().min(1).required().messages({
-  //   'string.base': 'Nama harus berupa huruf',
-  //   'string.min': 'Masukan nama minimal 5 huruf',
-  //   'string.empty': 'Masukan nama anda',
-  //   'any.required': 'Masukan nama anda',
-  // }),
   name: Joi.string().min(3).max(35).required().messages({
     'string.base': 'Nama harus berupa huruf',
     'string.min': 'Masukan nama minimal 5 huruf',

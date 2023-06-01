@@ -1,11 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {
-  my,
-  userUpdate,
-  passwordUpdate,
-  addMealsHistory,
-} = require('./usersController');
+const { dataAKG, miniHistory, suggestionMeals } = require('./homeController');
 
 router.use((req, res, next) => {
   console.info(!req.headers.token);
@@ -19,9 +14,8 @@ router.use((req, res, next) => {
   next();
 });
 
-router.get('/my', my);
-router.put('/update', userUpdate);
-router.put('/update/password', passwordUpdate);
-router.post('/add/meals', addMealsHistory);
+router.get('/dashboard/akg', dataAKG);
+router.get('/history/mini', miniHistory);
+router.get('/suggestion/mini', suggestionMeals);
 
 module.exports = router;
