@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 
-const PORT = 5000;
+const PORT = 8000;
 const DOMAIN = '127.0.0.1';
 
 const app = express();
@@ -9,6 +9,7 @@ const app = express();
 const sessionRouter = require('./api/session/sessionRouter');
 const homeRouter = require('./api/home/homeRouter');
 const userRouter = require('./api/users/usersRouter');
+const mealRouter = require('./api/meals/mealsRouter');
 //middleware
 const checkDeviceid = (req, res, next) => {
   if (!req.headers.deviceid) {
@@ -29,6 +30,7 @@ app.use(checkDeviceid);
 app.use('/api/session', sessionRouter);
 app.use('/api/', homeRouter);
 app.use('/api/user', userRouter);
+app.use('/api/meal', mealRouter);
 
 app.listen(PORT, DOMAIN, () => {
   console.log(`Server berjalan pada ${DOMAIN} dengan port ${PORT}`);

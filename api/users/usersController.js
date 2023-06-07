@@ -39,12 +39,14 @@ const my = async (req, res) => {
 
     const { name, age, body_height, body_weight, gender, is_pregnant } =
       search[0];
-
+    const image_profile =
+      'https://storage.googleapis.com/c23-capstone-bucket/assets/Profile/default-profile.png';
     const response = {
       rc: '00',
       message: 'Berhasil get data',
       data: {
         name,
+        image_profile,
         age,
         body_height,
         body_weight,
@@ -123,15 +125,7 @@ const userUpdate = async (req, res) => {
       is_pregnant,
       search[0].user_id,
     ]);
-    console.info([
-      name,
-      age,
-      body_height,
-      body_weight,
-      gender,
-      is_pregnant,
-      search[0].user_id,
-    ]);
+
     if (update.affectedRows == 0) {
       const resErr = {
         rc: '91',
@@ -202,7 +196,6 @@ const passwordUpdate = async (req, res) => {
 
     let { currentPassword, newPassword, confirmPassword } = value;
     let databasePassword = helper.decryption(search[0].password);
-    console.info(databasePassword);
     if (currentPassword !== databasePassword) {
       const resErr = {
         rc: '55',
@@ -255,7 +248,7 @@ const addMealsHistory = async (req, res) => {
     const deviceid = req.headers.deviceid;
 
     const searchStatement =
-      'SELECT account.user_id, session.token, session.token_exp FROM `account` INNER JOIN session ON account.user_id = session.user_id WHERE session.device_id = ?';
+      'SELECT suggestion_tag.accumalte_tag, account.user_id, session.token, session.token_exp FROM `account` INNER JOIN session ON account.user_id = session.user_id INNER JOIN suggestion_tag ON account.user_id = suggestion_tag.user_id WHERE session.device_id = ?';
     const search = await db.query(searchStatement, [deviceid]);
 
     if (search[0] === undefined) {
@@ -321,6 +314,14 @@ const addMealsHistory = async (req, res) => {
       return res.status(400).json(resErr);
     }
 
+    // const newMealTag = findMeals.map((single) => single.tag);
+    // console.info(newMealTag);
+    const acculumate_tag = JSON.parse(search[0].accumalte_tag);
+    //belom solve, tambahin update ke db suggestion tag
+    const dataAccumulateTag = JSON.stringify(
+      helper.generateAccumulateTag(findMeals, acculumate_tag)
+    );
+
     let totalCalories = 0;
     let totalCarb = 0;
     let totalFat = 0;
@@ -347,7 +348,8 @@ const addMealsHistory = async (req, res) => {
       'INSERT INTO `history`(`history_id`, `user_id`, `title`, `history_date`, `total_calories`, `total_carb`, `total_protein`, `total_fat`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
     const insertDetailStatement =
       'INSERT INTO `history_detail`(`history_id`, `meal_id`, `serve`, `calories`, `carb`, `protein`, `fat`) VALUES (?, ?, ?, ?, ?, ?, ?)';
-
+    const updateAccumulateTag =
+      'UPDATE suggestion_tag SET accumalte_tag = ? WHERE user_id = ?';
     const connection = await db.getDb();
     try {
       await connection.beginTransaction();
@@ -361,6 +363,7 @@ const addMealsHistory = async (req, res) => {
         totalProtein,
         totalFat,
       ]);
+      //update biar sekali aja insert ke dbnya
       newData.forEach(async (data) => {
         await connection.query(insertDetailStatement, [
           historyId,
@@ -372,7 +375,7 @@ const addMealsHistory = async (req, res) => {
           data.fat,
         ]);
       });
-
+      await connection.query(updateAccumulateTag, [dataAccumulateTag, userId]);
       await connection.commit();
     } catch (error) {
       const resErr = {

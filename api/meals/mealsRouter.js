@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const {
-  my,
-  userUpdate,
-  passwordUpdate,
-  addMealsHistory,
-} = require('./usersController');
+  addMeals,
+  getMeals,
+  getMealSingle,
+  updateMeal,
+  deleteMeal,
+} = require('./mealsController');
 
 router.use((req, res, next) => {
   if (!req.headers.token) {
@@ -18,9 +19,10 @@ router.use((req, res, next) => {
   next();
 });
 
-router.get('/my', my);
-router.put('/update', userUpdate);
-router.put('/update/password', passwordUpdate);
-router.post('/add/meals', addMealsHistory);
+router.get('/', getMeals);
+router.get('/single/:id', getMealSingle);
+router.post('/add', addMeals);
+router.put('/update/:id', updateMeal);
+router.delete('/delete/:id', deleteMeal);
 
 module.exports = router;

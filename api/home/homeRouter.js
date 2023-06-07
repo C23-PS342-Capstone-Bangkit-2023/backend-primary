@@ -3,7 +3,6 @@ const router = express.Router();
 const { dataAKG, miniHistory, suggestionMeals } = require('./homeController');
 
 router.use((req, res, next) => {
-  console.info(!req.headers.token);
   if (!req.headers.token) {
     const resErr = {
       rc: '05',
