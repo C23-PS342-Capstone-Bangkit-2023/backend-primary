@@ -8,7 +8,7 @@ const dataAKG = async (req, res) => {
     const deviceid = req.headers.deviceid;
 
     const searchStatement =
-      'SELECT account.age, session.token, session.token_exp FROM `account` INNER JOIN session ON account.user_id = session.user_id WHERE session.device_id = ?';
+      'SELECT account.age, account.gender, account.is_pregnant, session.token, session.token_exp FROM `account` INNER JOIN session ON account.user_id = session.user_id WHERE session.device_id = ?';
     const search = await db.query(searchStatement, [deviceid]);
 
     if (search[0] === undefined) {
@@ -36,11 +36,17 @@ const dataAKG = async (req, res) => {
     }
 
     const userAge = search[0].age;
-    const requirementData = helper.getRequirement(userAge);
-    const calories = requirementData.calories;
-    const protein = (calories / 100) * 15;
-    const carb = (calories / 100) * 65;
-    const fat = (calories / 100) * 20;
+    const userSex = search[0].gender;
+    const userIsPregnant = search[0].is_pregnant;
+    const requirementData = helper.getRequirement(
+      userAge,
+      userSex,
+      userIsPregnant
+    );
+    const calories = requirementData.kalori;
+    const protein = requirementData.protein;
+    const carb = requirementData.karbohidrat;
+    const fat = requirementData.lemak;
     const akg = Math.round(((protein + fat + carb) / calories) * 100);
     const response = {
       rc: '00',
@@ -51,7 +57,7 @@ const dataAKG = async (req, res) => {
         carb: carb,
         protein: protein,
         fat: fat,
-        water: requirementData.water,
+        water: 8,
       },
     };
     return res.status(200).json(response);
@@ -194,7 +200,14 @@ const suggestionMeals = async (req, res) => {
     // get data
     const dataML = JSON.parse(await helper.getClient(opsi, payload));
     const dataSearchMeals = dataML.data.map((single) => single.makanan);
-    console.info(dataSearchMeals);
+    if (dataSearchMeals[0] === undefined) {
+      const response = {
+        rc: '14',
+        message: 'tidak bisa get rekomendasi',
+        data: [],
+      };
+      return res.status(400).json(response);
+    }
     // cari di db id mealsnya
     // const searchDataMealsStatement =
     //   'SELECT meal_id, meal_name, meal_image, calories, carb, protein, fat FROM meals_data WHERE meal_id IN () LIMIT 3';
@@ -220,18 +233,9 @@ const suggestionMeals = async (req, res) => {
     const response = {
       rc: '00',
       message: 'Berhasil get data',
-      data: '',
+      data: dataSearchMeals,
     };
     return res.status(200).json(response);
-    // if (searchDataMeals === undefined) {
-    // } else {
-    //   const response = {
-    //     rc: '00',
-    //     message: 'Berhasil get data',
-    //     data: searchDataMeals,
-    //   };
-    //   return res.status(200).json(response);
-    // }
   } catch (error) {
     const resErr = {
       rc: '30',

@@ -75,21 +75,22 @@ const camelCaseConvert = (message) => {
   return value;
 };
 
-const getRequirement = (ageInput) => {
-  let index = staticData.filter((x) => x.age <= ageInput);
+const getRequirement = (ageInput, sex, isPregnant) => {
+  let index = requirementData
+    .filter((x) => x.umur <= ageInput)
+    .filter((y) => y.kelamin === sex)
+    .filter((z) => z.isPregnant === isPregnant);
   return index[index.length - 1];
 };
 
-const getAkg = (ageInput) => {
-  const requirementData = getRequirement(ageInput);
+const getAkg = (ageInput, sex, isPregnant) => {
+  const requirementData = getRequirement(ageInput, sex, isPregnant);
 
-  const calories = requirementData.calories;
-  const protein = (requirementData.calories / 100) * 15;
-  const carb = (requirementData.calories / 100) * 65;
-  const fat = (requirementData.calories / 100) * 20;
-  const akg = Math.round(
-    ((protein + fat + carb) / requirementData.calories) * 100
-  );
+  const calories = requirementData.kalori;
+  const protein = requirementData.protein;
+  const carb = requirementData.karbohidrat;
+  const fat = requirementData.lemak;
+  const akg = Math.round(((protein + fat + carb) / calories) * 100);
 
   const output = {
     calories,
