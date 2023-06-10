@@ -124,17 +124,10 @@ const generateAccumulateTag = (inputTag, oldTag) => {
 
 const addMealsAndId = (TagObject) => {
   try {
-    let zeros = '000';
-    let counter = 0;
-    let currentDate =
-      moment().format('YYYY') + moment().format('MM') + moment().format('DD');
     const newData = TagObject.map((single) => {
-      counter++;
       let container = {};
-      let tagArr = single.tag_makanan.split(' ').filter((tmp) => tmp !== '');
-      container.meal_id = `M-${currentDate}${zeros
-        .slice(counter.toString().length, zeros.length)
-        .concat('', counter)}`;
+      let tagArr = single.tag.split(',').filter((tmp) => tmp !== '');
+      container.meal_id = single.id;
       container.meal_name = single.makanan;
       container.meal_image =
         'https://storage.googleapis.com/c23-capstone-bucket/assets/bakso.png';

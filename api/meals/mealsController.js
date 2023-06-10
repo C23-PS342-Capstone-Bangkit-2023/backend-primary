@@ -36,8 +36,7 @@ const getMeals = async (req, res) => {
     }
 
     let mealName = '%' + (req.body.name ?? '') + '%';
-    let getMealStatement =
-      'SELECT meal_id, meal_name, meal_image, tag FROM meals_data WHERE meal_name LIKE ?';
+    let getMealStatement = 'SELECT * FROM meals_data WHERE meal_name LIKE ?';
     const getMeal = await db.query(getMealStatement, [mealName.toLowerCase()]);
     if (getMeal[0] !== undefined) {
       const response = {

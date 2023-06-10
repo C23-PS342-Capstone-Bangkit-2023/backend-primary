@@ -178,62 +178,38 @@ const suggestionMeals = async (req, res) => {
     // console.info(Object.keys(accumulateTag)[0]);
     let payload = [];
     for (let index = 0; index < 4; index++) {
-      if (
-        Object.keys(accumulateTag).length >= 5 ||
-        Object.keys(accumulateTag).length == index
-      ) {
-        break;
-      }
       payload.push(Object.keys(accumulateTag)[index]);
     }
 
     const opsi = {
       hostname: '127.0.0.1',
       port: 5000,
-      path: '/create',
+      path: '/sugestion',
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        // 'Content-Length': Buffer.byteLength(sendPayload),
       },
     };
     // get data
     const dataML = JSON.parse(await helper.getClient(opsi, payload));
-    const dataSearchMeals = dataML.data.map((single) => single.makanan);
-    if (dataSearchMeals[0] === undefined) {
+    const dataSearchMeals = Object.keys(dataML).map((single) => dataML[single]);
+    if (dataSearchMeals.length <= 0) {
       const response = {
-        rc: '14',
-        message: 'tidak bisa get rekomendasi',
+        rc: '00',
+        message: 'Berhasil get datas',
         data: [],
       };
-      return res.status(400).json(response);
+      return res.status(200).json(response);
     }
-    // cari di db id mealsnya
-    // const searchDataMealsStatement =
-    //   'SELECT meal_id, meal_name, meal_image, calories, carb, protein, fat FROM meals_data WHERE meal_id IN () LIMIT 3';
-    // const searchDataMeals = await db.query(searchDataMealsStatement, [dataML]);
-    // const currentDatetime = moment().format('YYYY-MM-DD HH:mm:ss');
-    // const currentDate = moment().format('YYYY-MM-DD 00:00:00');
-    // const searchNutritionStatement = `SELECT SUM(total_calories) AS sum_calories, SUM(total_carb) AS sum_carb, SUM(total_protein) AS sum_protein, SUM(total_fat) AS sum_fat FROM history WHERE user_id = ? AND history_date BETWEEN ? AND ?`;
-    // const searchNutrition = await db.query(searchNutritionStatement, [
-    //   search[0].user_id,
-    //   currentDate,
-    //   currentDatetime,
-    // ]);
 
-    // const requirementAkg = helper.getAkg(search[0].age);
-    // const userNeedNutrition = {
-    //   totalCalories:
-    //     requirementAkg.calories - (searchNutrition[0].sum_calories ?? 0),
-    //   totalCarb: requirementAkg.carb - (searchNutrition[0].sum_carb ?? 0),
-    //   totalProtein:
-    //     requirementAkg.protein - (searchNutrition[0].sum_protein ?? 0),
-    //   totalFat: requirementAkg.fat - (searchNutrition[0].sum_fat ?? 0),
-    // };
+    const getMealStatement = `SELECT meal_id, meal_name, meal_image, calories, carb, protein, fat, tag FROM meals_data WHERE meal_id IN (${dataSearchMeals
+      .map(() => '?')
+      .join(', ')})`;
+    const getMeal = await db.query(getMealStatement, dataSearchMeals);
     const response = {
       rc: '00',
       message: 'Berhasil get data',
-      data: dataSearchMeals,
+      data: getMeal,
     };
     return res.status(200).json(response);
   } catch (error) {

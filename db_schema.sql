@@ -194,7 +194,9 @@ INSERT INTO `meals_data` (`meal_id`, `meal_name`, `meal_image`, `calories`, `car
 ('M-20230607097', 'Bungkil kelapa', 'https://storage.googleapis.com/c23-capstone-bucket/assets/bakso.png', 368.0000, 23.0000, 40.0000, 15.0000, 'vegan,bubuk'),
 ('M-20230607098', 'Buntil daun talas', 'https://storage.googleapis.com/c23-capstone-bucket/assets/bakso.png', 141.0000, 4.4000, 8.0000, 10.2000, 'vegan,rebus,olahan'),
 ('M-20230607099', 'Cakalang asar (asap ', 'https://storage.googleapis.com/c23-capstone-bucket/assets/bakso.png', 155.0000, 20.1000, 10.2000, 3.8000, 'non-vegan,bakar,ikan,olahan'),
-('M-20230607100', 'Cake tape', 'https://storage.googleapis.com/c23-capstone-bucket/assets/bakso.png', 323.0000, 4.9000, 50.1000, 11.5000, 'vegan,kue,olahan'),
+('M-20230607100', 'Cake tape', 'https://storage.googleapis.com/c23-capstone-bucket/assets/bakso.png', 323.0000, 4.9000, 50.1000, 11.5000, 'vegan,kue,olahan');
+
+INSERT INTO `meals_data` (`meal_id`, `meal_name`, `meal_image`, `calories`, `carb`, `protein`, `fat`, `tag`) VALUES
 ('M-20230607101', 'Cammetutu', 'https://storage.googleapis.com/c23-capstone-bucket/assets/bakso.png', 102.0000, 3.2000, 8.7000, 6.0000, 'vegan,olahan'),
 ('M-20230607102', 'Cangkuning', 'https://storage.googleapis.com/c23-capstone-bucket/assets/bakso.png', 204.0000, 2.8000, 31.4000, 7.5000, 'vegan,kue,olahan'),
 ('M-20230607103', 'Cap cai, sayur', 'https://storage.googleapis.com/c23-capstone-bucket/assets/bakso.png', 97.0000, 5.8000, 4.2000, 6.3000, 'vegan,tumis,sayur,olahan'),
@@ -294,7 +296,9 @@ INSERT INTO `meals_data` (`meal_id`, `meal_name`, `meal_image`, `calories`, `car
 ('M-20230607197', 'Jambu bol, segar', 'https://storage.googleapis.com/c23-capstone-bucket/assets/bakso.png', 49.0000, 2.3000, 9.6000, 0.2000, 'vegan,buah'),
 ('M-20230607198', 'Jambu monyet, segar', 'https://storage.googleapis.com/c23-capstone-bucket/assets/bakso.png', 64.0000, 0.7000, 15.8000, 0.6000, 'vegan,buah'),
 ('M-20230607199', 'Jangang bintatoeng, ', 'https://storage.googleapis.com/c23-capstone-bucket/assets/bakso.png', 107.0000, 5.3000, 16.5000, 2.2000, 'non-vegan,olahan'),
-('M-20230607200', 'Japilus', 'https://storage.googleapis.com/c23-capstone-bucket/assets/bakso.png', 500.0000, 1.2000, 67.3000, 25.1000, 'vegan,olahan'),
+('M-20230607200', 'Japilus', 'https://storage.googleapis.com/c23-capstone-bucket/assets/bakso.png', 500.0000, 1.2000, 67.3000, 25.1000, 'vegan,olahan');
+
+INSERT INTO `meals_data` (`meal_id`, `meal_name`, `meal_image`, `calories`, `carb`, `protein`, `fat`, `tag`) VALUES
 ('M-20230607201', 'Jeruk bali, segar', 'https://storage.googleapis.com/c23-capstone-bucket/assets/bakso.png', 48.0000, 0.6000, 12.4000, 0.2000, 'vegan,buah'),
 ('M-20230607202', 'Jeruk banjar, segar', 'https://storage.googleapis.com/c23-capstone-bucket/assets/bakso.png', 61.0000, 0.8000, 14.1000, 0.2000, 'vegan,buah'),
 ('M-20230607203', 'Jeruk garut-keprok', 'https://storage.googleapis.com/c23-capstone-bucket/assets/bakso.png', 44.0000, 0.8000, 10.9000, 0.3000, 'vegan,buah'),
@@ -396,6 +400,7 @@ INSERT INTO `meals_data` (`meal_id`, `meal_name`, `meal_image`, `calories`, `car
 ('M-20230607299', 'Kue koa', 'https://storage.googleapis.com/c23-capstone-bucket/assets/bakso.png', 340.0000, 4.8000, 79.3000, 0.4000, 'vegan,kue,olahan'),
 ('M-20230607300', 'Kue ku temu', 'https://storage.googleapis.com/c23-capstone-bucket/assets/bakso.png', 214.0000, 3.5000, 49.6000, 0.2000, 'vegan,kue,olahan'),
 ('M-20230607301', 'Kue lumpur', 'https://storage.googleapis.com/c23-capstone-bucket/assets/bakso.png', 291.0000, 3.6000, 44.1000, 11.1000, 'vegan,kue,olahan');
+
 INSERT INTO `meals_data` (`meal_id`, `meal_name`, `meal_image`, `calories`, `carb`, `protein`, `fat`, `tag`) VALUES
 ('M-20230607302', 'Kue pelita', 'https://storage.googleapis.com/c23-capstone-bucket/assets/bakso.png', 141.0000, 5.3000, 17.6000, 5.5000, 'vegan,kue,olahan'),
 ('M-20230607303', 'Kue putu cangkir', 'https://storage.googleapis.com/c23-capstone-bucket/assets/bakso.png', 304.0000, 5.3000, 54.9000, 7.0000, 'vegan,kue,olahan'),
