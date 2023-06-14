@@ -9,11 +9,11 @@ const usersSchema = Joi.object({
     'any.required': 'Masukan nama anda',
   }),
   username: Joi.string().min(5).max(35).required().messages({
-    'string.base': 'Nama harus berupa huruf',
-    'string.min': 'Masukan nama minimal 5 huruf',
-    'string.max': 'Masukan nama maximal 35 huruf',
-    'string.empty': 'Masukan nama anda',
-    'any.required': 'Masukan nama anda',
+    'string.base': 'username harus berupa huruf',
+    'string.min': 'Masukan username minimal 5 huruf',
+    'string.max': 'Masukan username maximal 35 huruf',
+    'string.empty': 'Masukan username anda',
+    'any.required': 'Masukan username anda',
   }),
   password: Joi.string().min(6).max(35).required().messages({
     'string.base': 'password harus berupa huruf',

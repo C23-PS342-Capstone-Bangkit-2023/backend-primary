@@ -147,9 +147,10 @@ const login = async (req, res) => {
     }
 
     const searchSessionStatement =
-      'SELECT `user_id`, `device_id` FROM `session` WHERE device_id=?';
+      'SELECT `user_id`, `device_id` FROM `session` WHERE device_id=? OR user_id=?';
     const searchSession = await db.query(searchSessionStatement, [
       req.headers.deviceid,
+      search[0].user_id,
     ]);
 
     if (searchSession[0] !== undefined) {
@@ -188,13 +189,14 @@ const login = async (req, res) => {
       }
     } else {
       const createUpdateTokenStatement =
-        'UPDATE `session` SET `user_id`=?,`token`=?,`token_exp`=?,`device_id`=? WHERE user_id=?';
+        'UPDATE `session` SET `user_id`=?,`token`=?,`token_exp`=?,`device_id`=? WHERE user_id=? OR device_id=?';
       const createupdateToken = await db.query(createUpdateTokenStatement, [
         search[0].user_id,
         token,
         token_exp,
         req.headers.deviceid,
         search[0].user_id,
+        req.headers.deviceid,
       ]);
 
       if (createupdateToken.affectedRows == 0) {

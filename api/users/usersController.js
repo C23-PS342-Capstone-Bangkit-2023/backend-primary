@@ -214,7 +214,7 @@ const passwordUpdate = async (req, res) => {
 
     const updateStatement = 'UPDATE account SET password=? WHERE user_id=?';
     const update = await db.query(updateStatement, [
-      newPassword,
+      helper.encryption(newPassword),
       search[0].user_id,
     ]);
 
