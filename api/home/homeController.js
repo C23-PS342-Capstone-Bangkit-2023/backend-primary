@@ -38,11 +38,13 @@ const dataAKG = async (req, res) => {
     const userAge = search[0].age;
     const userSex = search[0].gender;
     const userIsPregnant = search[0].is_pregnant;
+
     const requirementData = helper.getRequirement(
       userAge,
       userSex,
       userIsPregnant
     );
+    console.info(requirementData);
     const calories = requirementData.kalori;
     const protein = requirementData.protein;
     const carb = requirementData.karbohidrat;
