@@ -77,6 +77,7 @@ const camelCaseConvert = (message) => {
 
 const getRequirement = (ageInput, sex, isPregnant) => {
   const requirementData = staticData;
+  // console.info(requirementData);
   let index = requirementData
     .filter((x) => x.umur <= ageInput)
     .filter((y) => y.kelamin === sex)

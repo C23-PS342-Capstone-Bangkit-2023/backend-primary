@@ -2,10 +2,10 @@ const mysql = require('mysql2/promise');
 
 const databaseConfig = {
   connectionLimit: 10,
-  host: '127.0.0.1',
-  user: 'root',
-  password: '',
-  database: 'cp_2023',
+  host: process.env['DBHOST'] || '127.0.0.1',
+  user: process.env['DBUSER'] || 'root',
+  password: process.env['DBPASSWORD'] || '',
+  database: process.env['DBNAME'] || 'cp_2023',
 };
 
 async function query(sql, params) {

@@ -1,7 +1,8 @@
 const helper = require('../../utils/helper.js');
 const db = require('../../utils/database.js');
 const moment = require('moment');
-
+const secondaryHost = process.env['SECONDARYHOST'] || '127.0.0.1';
+const secondaryPort = process.env['SECONDARYPORT'] || '5000';
 const dataAKG = async (req, res) => {
   try {
     const token = req.headers.token;
@@ -36,7 +37,12 @@ const dataAKG = async (req, res) => {
     }
 
     const userAge = search[0].age;
-    const userSex = search[0].gender;
+    let userSex = '';
+    if (search[0].gender == 'male') {
+      userSex = 'LK';
+    } else {
+      userSex = 'PR';
+    }
     const userIsPregnant = search[0].is_pregnant;
 
     const requirementData = helper.getRequirement(
@@ -44,11 +50,10 @@ const dataAKG = async (req, res) => {
       userSex,
       userIsPregnant
     );
-    console.info(requirementData);
-    const calories = requirementData.kalori;
-    const protein = requirementData.protein;
-    const carb = requirementData.karbohidrat;
-    const fat = requirementData.lemak;
+    const calories = requirementData.Kalori;
+    const protein = requirementData.Protein;
+    const carb = requirementData.Karbohidrat;
+    const fat = requirementData.Lemak;
     const akg = Math.round(((protein + fat + carb) / calories) * 100);
     const response = {
       rc: '00',
@@ -184,8 +189,8 @@ const suggestionMeals = async (req, res) => {
     }
 
     const opsi = {
-      hostname: '127.0.0.1',
-      port: 5000,
+      hostname: secondaryHost,
+      port: secondaryPort,
       path: '/sugestion',
       method: 'POST',
       headers: {

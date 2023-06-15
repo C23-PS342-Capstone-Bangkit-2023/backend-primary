@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 
-const PORT = 8000;
+const PORT = process.env['PRIMARYPORT'] || 8000;
 const DOMAIN = '127.0.0.1';
 
 const app = express();
