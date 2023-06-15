@@ -182,12 +182,15 @@ const suggestionMeals = async (req, res) => {
     ]);
     // kirim data ke secondary primary
     const accumulateTag = JSON.parse(searchSuggestionTag[0].accumalte_tag);
-    // console.info(Object.keys(accumulateTag)[0]);
     let payload = [];
-    for (let index = 0; index < 4; index++) {
-      payload.push(Object.keys(accumulateTag)[index]);
+    if (Object.keys(accumulateTag).length > 0) {
+      for (let index = 0; index < 4; index++) {
+        if (payload.length == 4) {
+          break;
+        }
+        payload.push(Object.keys(accumulateTag)[index]);
+      }
     }
-
     const opsi = {
       hostname: secondaryHost,
       port: secondaryPort,
@@ -200,7 +203,7 @@ const suggestionMeals = async (req, res) => {
     // get data
     const dataML = JSON.parse(await helper.getClient(opsi, payload));
     const dataSearchMeals = Object.keys(dataML).map((single) => dataML[single]);
-    if (dataSearchMeals.length <= 0) {
+    if (dataSearchMeals.length < 0) {
       const response = {
         rc: '00',
         message: 'Berhasil get datas',
@@ -213,6 +216,14 @@ const suggestionMeals = async (req, res) => {
       .map(() => '?')
       .join(', ')})`;
     const getMeal = await db.query(getMealStatement, dataSearchMeals);
+    if (getMeal[0] === undefined) {
+      const response = {
+        rc: '00',
+        message: 'Berhasil get data',
+        data: [],
+      };
+      return res.status(200).json(response);
+    }
     const response = {
       rc: '00',
       message: 'Berhasil get data',
